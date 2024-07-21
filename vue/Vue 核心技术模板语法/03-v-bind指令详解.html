@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-bind指令详解</title>
+    <!-- 安装 Vue -->
+    <script src="../js/vue.js"></script>
+</head>
+<>
+    <!-- 
+        v-bind 指令详解
+        1. 这个指令是干啥的？
+        2. v-bind 指令的语法格式
+        <html标签 标签 v-bind:参数="表达式"></html标签>
+        3.v-bind 指令的编译原理？
+            编译前:
+                <html标签 标签 v-bind:参数="表达式"></html标签>
+            编译后:
+                <html标签 标签 属性名="属性值"></html标签>
+            其实就是 <html标签 标签 参数="表达式的结果"></html标签>
+
+            注意两项:
+                第一: 在编译的时候 v-bind后面的“参数名” 会被编译为HTML标签的“属性名”
+                第二: 表达式会关联 data，当data发生改变之后，表达式的执行结果就会发生变化
+                所以，连带的就会产生动态效果
+        4. v-bind 因为很常用，所以 Vue 框架对该指令提供了一种简写方式
+            只是针对 v-bind 提供了以下简写方式：
+            <img :src="imgPath">
+
+        5. 什么时候用插值语法，什么使用用指令呢
+        > 凡是标签体当中的内容要想动态的话，需要使用插值语法
+        > 凡是只要向 HTMl标签的属性动态，需要使用指令语法。
+        简单的说：就是插值语法修改标签内容，指令语法修改标签属性
+        指令的职责是：当表达式的值改变时，将其产生的连带影响，响应式地作用域 DOM
+     -->、
+     <!-- 主表一个容器 -->
+     <div id="app">
+        <!-- 注意：以下代码中 msg 是变量名 -->
+        <!-- 注意：原则上 v-bind 指令后面的这个参数名可以随便写。 -->
+        <!-- 虽然可以随便写，但大部分情况下，这个参数名还是需要写成该HTMl标签支持的属性名，这样才有意义 -->
+        <span v-bind:xyz="msg">?</span>
+
+        <!-- 这个表达式带有单引号，这 msg 就不是变量了，是常量 -->
+        <span v-bind:xyz="'msg'"></span>
+
+        <!-- v-bind实战 -->
+        <img src="../img/1.png"><br>
+        <img v-bind:src="imgPath"><br>
+
+        <!-- v-bind 简写形式 -->
+        <img :src="imgPath2"><br>
+
+        <!-- 这是一个普通的文本框 -->
+        <input type="text" name="username" value="zhangsan"><br>
+        <!-- 以下文本框可以让 value 这个数据变成动态的，这个就是典型的动态数据绑定 -->
+        <input type="text" name="username" :value="username"><br>
+
+        <!-- 使用 v-bind 也可以让超链接的地址动态 -->
+        <a href="https:www.baidu.com">走起</a> <br>
+        <a :href="url">走起2</a><br>
+
+        <!-- 
+            不能这样，报错了，信息如下：
+            d="{{val}}": Interpolation inside attributes has been removed. Use v-bind or the colon shorthand instead. For example, instead of <div id="{{ val }}">, use <div :id="val">.
+
+                <div id="{{val}}">user</div :id="val">
+                    属性内部插值这种语法已经被移除了，可能 Vue在以前的版本中支持这种语法，但是现在不允许了
+         -->
+        
+     </div>
+     <!-- Vue 程序 -->
+     <script>
+        // 赋值的过程就可以看做式一个绑定的过程
+        // let i = 100
+
+        new Vue ({
+            el : '#app',
+            data : {
+                msg : 'hello vue',
+                imgPath : '../img/1.png',
+                imgPath2 : '../img/2.png',
+                username : 'lihua',
+                url : 'https://www.baidu.com'
+            }
+        })
+     </script>
+    
+</body>
+</html>

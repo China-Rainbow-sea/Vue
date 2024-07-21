@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>template 配置详解</title>
+    <!-- 安装 Vue -->
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!-- 指定挂载位置 -->
+    <!-- 注意：以下代码就是只有 Vue 框架能够看懂的代码了，下面的代码就是一个模板语句，
+    这个代码就是需要 Vue 框架编译。然后渲染的 -->
+    <div id="app">
+        <div>
+            <h1>{{msg}}</h1>
+            <h1>{{name}}</h1>
+        </div>
+    </div>
+
+
+    <!-- vue 程序 -->
+    <script>
+        // Vue.config 是Vue 的全局配置对象
+        // productionTip 属性可以设置是否生成提示信息
+        // 默认值:true，如果是 false 则表示阻止生成提示信息
+        Vue.config.productionTip = false
+
+
+
+
+
+        /*
+            关于 template 配置项:
+            1.template 后面指定的是模板语句，但是模板语句中只能有一个根节点 : template : '<h1>{{msg}}</h1> <h1>和</h1>', 错误的，只能有一个 <h1>
+            > Component template should contain exactly one root element. If you are using v-if on multiple elements, use v-else-if to chain them instead. 
+            2.只要data中的数据发生变化，模板语句一定会重新编译，(只要data变，template就会重新编译，
+            重新渲染)
+            3.如果使用 template 配置项的话，指定挂载位置的元素会被替换
+            4.好消息：目前我们可以不使用 template 来编写模板语句，这些模板语句可以直接写到 html标签中
+            ，Vue框架能够找到并编译，然后渲染。
+              <!-- 指定挂载位置 -->
+    <div id="app">
+        <div>
+            <h1>{{msg}}</h1>
+            <h1>{{name}}</h1>
+        </div>
+    </div>
+    
+            5. 如果直接将模板语句编写到 html标签中，指定的挂载位置就不会被替换了。
+        关于 .$mount('#app')
+             也可以不使用 .$mount('#app') 方式进行挂载了
+             在Vue中有一个配置项: e1,注意是 L 不是 数字 1
+             e1配置项和 .$mount() 可以达到同样的效果
+             e1配置项的作用？
+                告诉 Vue 实例去接管哪个容器
+                 el : '#app' 表示让Vue容器去接管 id = 'app'的容器
+
+         */
+        new Vue({
+            // 错误的
+            // template : '<h1>{{msg}}</h1> <h1>和</h1>',
+            /*  template : 
+             `<div>
+                     <h1>{{msg}}</h1>
+                     <h1>{{name}}</h1>
+             </div>`, */
+            data: {
+                msg: '你好世界',
+                name: 'Rainbow Sea'
+            },
+            // el : '#app'
+            el : document.getElementById('app')
+        })
+        // }).$mount('#app')
+    </script>
+</body>
+
+</html>

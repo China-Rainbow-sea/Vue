@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue数据代理机制对属性名的要求</title>
+    <!-- 安装vue -->
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+
+    <!-- 
+        1.Vue实例不会给以 _ 和 $开始的属性名做数据代理
+        2.为什么
+            如果允许给_或$开始的属性名做数据大理的话,
+            vm这个Vue实例上可能会出现_xxx或$xxx属性
+            而这个属性名可能会和 Vue框架自身的属性名冲突
+
+        3.在 Vue 当中,给data对象的属性名命名的时候,不能以 _ 或 $ 开始
+        简单的说就是: _ 和 $ 就类似于Java当中的关键字一样的存在,不可以作为变量使用
+     -->
+
+
+    <!-- 容器 -->
+    <div id="app">
+        <h1>{{msg}}</h1>
+    </div>
+
+    <!-- vue 程序 -->
+    <script>
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                msg: 'hello vue',
+                _name: 'ddd'
+            }
+        })
+    </script>
+</body>
+
+</html>
