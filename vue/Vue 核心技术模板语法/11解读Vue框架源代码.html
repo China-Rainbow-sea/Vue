@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>解读Vue框架源代码</title>
+    <!-- 安装 Vue -->
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>姓名: {{name}}</h1>
+        <h1>年龄：{{age}}岁</h1>
+    </div>
+    
+
+    <!-- 
+        通过以上源码解读：可以得知data不一定是一个{}，也可以是一个函数
+        代码含义:
+            如果data是函数，则调用getData(data,vm)来获取data
+            如果data不是函数,则直接将data返回，给data变量，并且同时将data赋值给 vm.data属性了
+        有一个疑问？
+            程序执行到这里，为什么要给vm扩展一个_data属性呢？
+            _data属性，以"_" 开始，足以说明，这个属性是人家 Vue框架底层需要访问的
+            Vue 框架底层它使用vm._data这个属性干啥呢？
+            vm._data是啥?
+                vm._data是: {
+                    name: 'jackson'
+                    age : 35
+                }
+            vm.data这个属性直接指向了底层真实的data对象。通过_data访问的name和age是不会走数据代理机制的，通过vm._data方法获取name和age的时候，是不会走getter 和 setter方法的
+
+            注意: 对于 Vue 实例vm来说，不仅有_data这个属性，还有一个$data这个属性，
+            _data 是框架内部使用的，可以看做私有的
+            &data 这是vue框架对外公开的一个属性，是给我们程序员使用
+
+            3.重点函数:
+                funcation isReserved(str) {
+                    var c = (srt + '').charCodeAt(0);
+                    return c === 0x24 || c === 0x5f
+                }
+                这个函数是用来判断字符串是否以_和&开始的
+                true 表示以 _ 或 $ 开始的
+                false 表示不是以_ 或 $ 开始的
+            
+            
+            proxy(vm,"_data",key);
+                通过这行代码直接进入代理机制(数据代理)
+            5.重点函数 proxy
+                function proxy (target,sorceKey,key) { // target是vm，sorcekey是"_data"
+                sharedPropertyDefinition.get = function proxyGetter() {
+                    return this["_data"]["age"];
+                }
+
+                }
+
+
+     -->
+
+    <!-- vue代码 -->
+    <script>
+        function isResrved(str) {
+            return c === 0x24 || c === 0x5f;
+        }
+
+        const vm = new Vue({
+            el : '#app',
+            data : {
+                name : 'jackson',
+                age : 18
+            }
+        })
+
+        // 如果我们程序员不想走代理的方式读取 data,想直接读取data当中的数据，
+        // 可以通过_data和$data属性来访问
+        // 建议使用$data这个属性
+        console.log('name ='  + vm.$data.name)
+        console.log('age =' + vm.$data.age)
+    </script>
+</body>
+</html>

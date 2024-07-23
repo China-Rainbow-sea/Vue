@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>methods 实现原理</title>
+    <!-- 引入我们自己的 vue.js -->
+    <script src="../js/myvue.js"></script>
+</head>
+<body>
+    <!-- Vue 程序 -->
+    <script>
+        const vm = new Vue ({
+            
+            data : {
+                msg : 'hello vue!'
+            },
+            methods : {
+                sayHi(){
+                    alert('hi'),
+                    console.log(this === vm)
+                },
+                sayHello() {
+                    alert('hello')
+                },
+                sayWhat:() => {
+                    console.log(this === vm)  // 不相等为 false
+                    console.log(this) // window 
+                }
+            }
+        })
+    </script>
+    
+</body>
+</html>
