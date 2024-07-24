@@ -7,13 +7,122 @@
     <title>事件修饰符</title>
     <!-- 安装 Vue -->
     <script src="../js/vue.js"></script>
+
+    <style>
+        .divList{
+            width:300px;
+            height:200px;
+            background-color:aquamarine;
+        }
+        .item{
+            width: 300px;
+            height: 200px;
+        }
+    </style>
 </head>
 <body>
+    <!-- 
+        Vue当中提供的事件修饰符
+        stop : 停止事件冒泡，等同于 event.stopPropagation()
+        prevent: 等同于 event.preventDefault()阻止事件的默认行为
+        capture: 添加事件监听器时使用事件捕获模式
+                    添加事件监听器包括两个不同的方式:
+                    一种时从内到外添加。（事件冒泡模式）
+                    一种时从外到内添加。(事件捕获模式)
+        self : 这个世界如果是“我自己元素”上发生的事件，这个事件不是别人给我传递过来的事件，则执行对应的程序。
+        once：事件只会发生一次，后面无论你点击多少下，都不会发生的了
+        passive：passive 翻译为顺从/不抵抗。无需等待，直接继续(立即)执行事件的默认行为
+            注意：.passive 和 .prevent 修饰符是对立的，不可以共存。
+            .prevent 阻止事件的默认行为
+            .passive: 解除阻止
+        
+     -->
     <!-- 容器 -->
-    <div id="app">
+    <!-- 冒泡事件 -->
+    <div id="app2" @click="san">
         <h1>{{msg}}</h1>
-        <a href="https://www.baidu.com" @click="yi">百度</a>
+        <div @click="er">
+                <button @click="yi">事件冒泡</button>
+        </div>
+        <!-- <a href="https://www.baidu.com" @click.prevent="yi">百度</a> -->
     </div>
+    <br>
+    <br>
+    <!-- 停止事件冒泡 -->
+    <div id="app2" @click="san">
+        <div @click.stop="er">
+            <button @click="yi">阻止事件冒泡</button>
+        </div>
+    </div>
+
+    <br>
+    <br>
+    <!--添加事件监听器时使用事件捕获模式  321 的顺序 -->
+    <div  id="app3"  @click.capture="san">
+        <div @click.capture="er">
+            <button @click.capture="yi">添加事件监听器的时候采用事件捕获模式</button>
+        </div>
+    </div>
+
+    <br>
+     <!--添加事件监听器时使用事件捕获模式  312 的顺序 -->
+     <div  id="app4"  @click.capture="san">
+        <!-- 这里没有添加.capture 修饰，以下这个元素，以及这个元素的子元素，都会默认采用冒泡模式 -->
+        <div @click="er">
+            <button @click.capture="yi">添加事件监听器的时候采用事件捕获模式</button>
+        </div>
+    </div>
+
+    <br>
+    <br>
+    <!-- set 修饰符  123-->
+    <div id="app5" @click="san">
+        <div @click="er">
+            <button @click.self="yi">set修饰符</button>
+        </div>
+    </div>
+
+    <br>
+    <br>
+    <!-- set 修饰符 13  
+     在Vue 当中，事件修饰符时可以多个联合使用的-->
+    <div id="app6" @click="san">
+        <div @click.self="er">
+            <button @click="yi">set修饰符</button>
+        </div>
+    </div>
+
+    <br>
+    <br>
+    <!-- set 修饰符 1 
+     在Vue 当中，事件修饰符时可以多个联合使用的
+    但是需要注意:
+        @click.self.stop : 先.sef，再stop
+        @click.stop.self: 先.stop，再.self
+    -->
+    <div id="app7" @click="san">
+        <div @click="er">
+            <button @click.self.stop="yi">set修饰符</button>
+        </div>
+    </div>
+
+    <br>
+    <br>
+    <div id="app8">
+        <!-- once 修饰：事件只发生一次,再点击多少次都没用了 -->
+        <button @click.once="yi">事件只发生一次</button>
+    </div>
+
+
+    <br>
+
+    <!-- .passive 修饰符 -->
+    <div id="app" class="divList" @wheel.passive="testPassive">
+        <div class="item">div1</div>
+        <div class="item">div2</div>
+        <div class="item">div3</div>
+    </div>
+
 
     <script>
         const vm = new Vue ({
@@ -23,9 +132,28 @@
             },
 
             methods : {
-                yi(){
-                    alert('去百度!!!')
+                yi(event){
+                    alert(1)
+                    // 手动调用事件对象preventDafault()方法，可以阻止事件的默认行为
+                    // 在Vue当中，这种事情的默认行为可以不采用手动调用DOM的方式来完成，可以使用事件修饰符: prevent
+                    // event.preventDefault();
+                },
+                er() {
+                    alert(2)
+                },
+                san(){
+                    alert(3)
+                },
+                testPassive(event) {
+                    // console.log('test passive')
+                    // 阻止事件的默认行为
+                    // event.preventDefault()
+
+                    for(let i = 0; i < 1000; i++) {
+                        console.log('test passive')
+                    }
                 }
+
             }
         })
     </script>
