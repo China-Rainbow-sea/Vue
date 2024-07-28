@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表单数据的收集</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <h1>{{msg}}</h1>
+    <form @submit.prevent="send">
+        <!--        v-model 双向绑定-->
+        用户名: <input type="text" v-model.trim="user.username"><br><br>
+        密码: <input type="password" v-model="user.password"><br><br>
+        年龄: <input type="number" v-model.number="user.age"><br><br>
+        性别:
+        <!--        注意：如果这里 没有 value 的话， v-model 的 gender 是 Null-->
+        男: <input type="radio" name="gender" value="1" v-model="user.gender">
+        女: <input type="radio" name="gender" value="0" v-model="user.gender"><br><br>
+        爱好:
+        <!--        注意：这里没有 设置 value 就只有全选，和不全选的效果。
+        对于checkbox 来说，如果没有手动指定value,那么会拿这个标签的checked属性的值作为value-->
+        旅游<input v-model="user.interest" type="checkbox" value="travel">
+        运动<input v-model="user.interest" type="checkbox" value="sport">
+        唱歌<input v-model="user.interest" type="checkbox" value="sing">
+        <br><br>
+        学历:
+<!--        多选可框只需要在多选当中设置 v-model 即可-->
+        <select v-model="user.grade">
+            <option value="">请选择学历</option>
+            <option value="zk">专科</option>
+            <option value="bk">本科</option>
+            <option value="ss">硕士</option>
+        </select>
+        <br><br>
+
+        简介:
+        <textarea cols="50" rows="15" v-model="user.introduce"></textarea><br><br>
+<!--        没有设置 value ，则就是 默认值的 true ，和 false 两种情况-->
+        <input type="checkbox" v-model="user.accept">阅读并接受协议<br><br>
+        <button @click.prevent="send">注册</button>
+    </form>
+</div>
+
+<script>
+    const vm = new Vue({
+        el: '#app',
+        /*data: {
+            msg: '表单数据的收集',
+            username: '',
+            password: '',
+            age: '',
+            // 如果定义了值的，话，由于 v-model 的双向绑定的关系，有这默认选择的效果
+            gender: '1',
+            //复选框定义为 数组接收住
+            interest: ['travel'],
+            grade:'',
+            introduce:'',
+            accept:''
+
+        },*/
+        data: {
+            user:{
+                username: '',
+                password: '',
+                age: '',
+                // 如果定义了值的，话，由于 v-model 的双向绑定的关系，有这默认选择的效果
+                gender: '1',
+                //复选框定义为 数组接收住
+                interest: ['travel'],
+                grade:'',
+                introduce:'',
+                accept:''
+            },
+            msg: '表单数据的收集',
+
+        },
+        methods:{
+            send() {
+                alert('ajax...')
+                // 将数据收集好，发送给服务器
+                // console.log(JSON.stringify(this.$data))
+                console.log(JSON.stringify(this.user))
+            }
+        }
+    })
+</script>
+
+</body>
+</html>

