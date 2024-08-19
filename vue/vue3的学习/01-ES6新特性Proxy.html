@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ES6新特性Proxy</title>
+</head>
+<body>
+
+<script>
+    // 目标对象
+    let user = {
+        name:'jack'
+    }
+
+    // 通过Proxy来生成代理对象
+    // 代理模式的原理：通过代理对象去完成目标对象的任务，同时还可以额外新增一些程序。
+    let userProxy = new Proxy(user,{
+        // 主要式通过这些配置项来完成响应式处理的
+        // 当你读取的时候，get执行
+        // target: 参数式代表目标对象
+        // propertyName 参数代表的式目标对象山的属性名
+        get(target,propertyName){
+            console.log('读取了');
+            /*   console.log(target);
+               console.log(propertyName);
+               console.log(typeof propertyName);
+
+               return 200*/
+
+            return target[propertyName]
+
+        },
+        // 当你修改某个属性的时候，或者新增某个属性的时候，set执行
+        // target 目标对象
+        // propertyName 属性名
+        // value 具体赋什么值
+        set(target,propertyName,value){
+            console.log('修改了');
+            target[propertyName] = value
+        },
+        // 当你删除某个属性的时候，deleteProperty就会执行
+        // deleteProperty 方法同样有两个参数
+        // target: 参数式代表目标对象
+        // propertyName 参数代表的式目标对象山的属性名
+        deleteProperty(target,propertyName) {
+            console.log('删除了');
+            // delete  target[propertyName]
+            return delete  target[propertyName]
+        }
+
+    })
+</script>
+
+</body>
+</html>
